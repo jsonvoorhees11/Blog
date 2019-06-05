@@ -6,5 +6,7 @@ namespace Blog.DataAccess.Entities{
         public string Alias { get; set; }
         public long CreatedDate { get; set; }
         public long LastModifiedDate { get; set; }
+
+        public IEnumerable<ArticleTag> ArticleTags {get;set;}
     }
 }

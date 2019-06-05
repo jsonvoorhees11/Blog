@@ -10,5 +10,7 @@ namespace Blog.DataAccess.Entities
         public long CreatedDate { get; set; }
         public long LastModifiedDate { get; set; }
 
+        public IEnumerable<Article> Articles {get;set;}
+
     }
 }
