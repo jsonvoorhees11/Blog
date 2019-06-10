@@ -71,6 +71,7 @@ namespace Blog.DataAccess
                 category.HasOne(c=>c.Parent)
                         .WithMany(pc=>pc.Children)
                         .HasForeignKey(c=>c.ParentId);
+                
             });
 
             modelBuilder.Entity<Comment>(comment=>{
