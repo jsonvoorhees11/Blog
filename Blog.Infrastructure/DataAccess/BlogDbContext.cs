@@ -13,6 +13,8 @@ namespace Blog.DataAccess
         public DbSet<Reader> Readers { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ArticleCategory> ArticleCategory { get; set; }
+        public DbSet<ArticleTag> ArticleTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,6 +59,46 @@ namespace Blog.DataAccess
 
             });
 
+            modelBuilder.Entity<Category>(category=>{
+                category.HasKey(c=>c.Id);
+                category.HasAlternateKey(c=>c.Alias)
+                .HasName("Unique_Alias");
+                category.Property(c=>c.Description).IsRequired();
+                category.Property(c=>c.CreatedDate)
+                        .HasDefaultValue(TimeConstants.EpochStart);
+                category.Property(c=>c.LastModifiedDate)
+                        .HasDefaultValue(TimeConstants.EpochStart);
+                category.HasOne(c=>c.Parent)
+                        .WithMany(pc=>pc.Children)
+                        .HasForeignKey(c=>c.ParentId);
+            });
+
+            modelBuilder.Entity<Comment>(comment=>{
+                comment.HasKey(c=>c.Id);
+                comment.HasOne(c=>c.Reader)
+                        .WithMany(r=>r.Comments)
+                        .HasForeignKey(c=>c.ReaderId);
+                comment.HasOne(c=>c.Article)
+                        .WithMany(a=>a.Comments)
+                        .HasForeignKey(c=>c.ArticleId);
+                comment.Property(c=>c.CreatedDate)
+                        .HasDefaultValue(TimeConstants.EpochStart);
+                
+            });
+
+            modelBuilder.Entity<Reader>(reader=>{
+                reader.HasKey(r=>r.Id);
+                reader.Property(r=>r.Name).IsRequired();
+                reader.Property(r=>r.IpAddress).IsRequired();
+            });
+
+            modelBuilder.Entity<Tag>(tag=>{
+                tag.HasKey(t=>t.Id);
+                tag.HasAlternateKey(t=>t.Alias).HasName("Unique_Alias");
+                tag.Property(t=>t.CreatedDate)
+                        .HasDefaultValue(TimeConstants.EpochStart);
+            });
+
             modelBuilder.Entity<User>(user =>
             {
                 user.HasKey(m => m.Id);
@@ -67,8 +109,6 @@ namespace Blog.DataAccess
                 user.Property(m => m.LastModifiedDate)
                         .HasDefaultValue(TimeConstants.EpochStart);
             });
-
-
 
         }
     }
