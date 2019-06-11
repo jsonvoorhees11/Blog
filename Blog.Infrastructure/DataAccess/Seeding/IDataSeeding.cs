@@ -9,7 +9,7 @@ namespace Blog.DataAccess.Seeding{
         IEnumerable<ArticleTag> GetArticleTags();
         IEnumerable<Category> GetCategories();
         IEnumerable<Comment> GetComments();
-        IEnumerable<Reader> Readers();
+        IEnumerable<Reader> GetReaders();
         IEnumerable<Tag> GetTags();
         IEnumerable<User> GetUsers();
     }

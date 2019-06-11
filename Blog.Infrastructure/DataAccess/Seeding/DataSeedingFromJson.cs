@@ -1,33 +1,42 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Blog.DataAccess.Entities;
+using Blog.DataAccess.Constants;
 using Newtonsoft.Json;
 
 namespace Blog.DataAccess.Seeding{
     public class DataSeedingFromJson : IDataSeeding {
+        public DataSeedingFromJsonDto Data;
+
+        public DataSeedingFromJson()
+        {
+            string dataJsonString = File.ReadAllText(FilePathConstants.DataSeeding);
+            Data = JsonConvert.DeserializeObject<DataSeedingFromJsonDto>(dataJsonString);
+        }
         public IEnumerable<Article> GetArticles(){
-            return new List<Article>();
+            return Data.Articles;
         }
         public IEnumerable<ArticleCategory> GetArticleCategories(){
-            throw new NotImplementedException();
+            return Data.ArticleCategories;
         }
         public IEnumerable<ArticleTag> GetArticleTags(){
-            throw new NotImplementedException();
+            return Data.ArticleTags;
         }
         public IEnumerable<Category> GetCategories(){
-            throw new NotImplementedException();
+            return Data.Categories;
         }
         public IEnumerable<Comment> GetComments(){
-            throw new NotImplementedException();
+            return Data.Comments;
         }
-        public IEnumerable<Reader> Readers(){
-            throw new NotImplementedException();
+        public IEnumerable<Reader> GetReaders(){
+            return Data.Readers;
         }
         public IEnumerable<Tag> GetTags(){
-            throw new NotImplementedException();
+            return Data.Tags;
         }
         public IEnumerable<User> GetUsers(){
-            throw new NotImplementedException();
+            return Data.Users;
         }
     }
 }

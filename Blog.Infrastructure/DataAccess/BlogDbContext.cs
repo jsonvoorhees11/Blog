@@ -2,11 +2,18 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Blog.DataAccess.Entities;
 using Blog.DataAccess.Constants;
+using Blog.DataAccess.Seeding;
 
 namespace Blog.DataAccess
 {
     public class BlogDbContext : DbContext
     {
+        private readonly IDataSeeding _dataSeeding;
+        public BlogDbContext(IDataSeeding dataSeeding, DbContextOptions<BlogDbContext> options):base(options)
+        {
+            _dataSeeding = dataSeeding;
+
+        }
         public DbSet<Article> Articles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -27,6 +34,8 @@ namespace Blog.DataAccess
                 articleCategory.HasOne(ac => ac.Category)
                 .WithMany(a => a.ArticleCategories)
                 .HasForeignKey(ac => ac.CategoryId);
+
+                articleCategory.HasData(_dataSeeding.GetArticleCategories());
             });
 
             modelBuilder.Entity<ArticleTag>(articleTag =>
@@ -38,6 +47,8 @@ namespace Blog.DataAccess
                 articleTag.HasOne(ac => ac.Tag)
                 .WithMany(a => a.ArticleTags)
                 .HasForeignKey(ac => ac.TagId);
+
+                articleTag.HasData(_dataSeeding.GetArticleTags());
             });
 
             modelBuilder.Entity<Article>(article =>
@@ -57,6 +68,7 @@ namespace Blog.DataAccess
                         .WithMany(n => n.Articles)
                         .HasForeignKey(m => m.AuthorId);
 
+                article.HasData(_dataSeeding.GetArticles());
             });
 
             modelBuilder.Entity<Category>(category=>{
@@ -72,7 +84,8 @@ namespace Blog.DataAccess
                 category.HasOne(c=>c.Parent)
                         .WithMany(pc=>pc.Children)
                         .HasForeignKey(c=>c.ParentId);
-                
+
+                category.HasData(_dataSeeding.GetCategories());
             });
 
             modelBuilder.Entity<Comment>(comment=>{
@@ -85,6 +98,8 @@ namespace Blog.DataAccess
                         .HasForeignKey(c=>c.ArticleId);
                 comment.Property(c=>c.CreatedDate)
                         .HasDefaultValue(TimeConstants.EpochStart);
+
+                comment.HasData(_dataSeeding.GetComments());        
                 
             });
 
@@ -92,6 +107,8 @@ namespace Blog.DataAccess
                 reader.HasKey(r=>r.Id);
                 reader.Property(r=>r.Name).IsRequired();
                 reader.Property(r=>r.IpAddress).IsRequired();
+
+                reader.HasData(_dataSeeding.GetReaders());
             });
 
             modelBuilder.Entity<Tag>(tag=>{
@@ -99,6 +116,8 @@ namespace Blog.DataAccess
                 tag.HasAlternateKey(t=>t.Alias).HasName("Unique_Alias");
                 tag.Property(t=>t.CreatedDate)
                         .HasDefaultValue(TimeConstants.EpochStart);
+
+                tag.HasData(_dataSeeding.GetTags());
             });
 
             modelBuilder.Entity<User>(user =>
@@ -110,6 +129,8 @@ namespace Blog.DataAccess
                     .HasDefaultValue(TimeConstants.EpochStart);
                 user.Property(m => m.LastModifiedDate)
                         .HasDefaultValue(TimeConstants.EpochStart);
+
+                user.HasData(_dataSeeding.GetUsers());
             });
 
         }
