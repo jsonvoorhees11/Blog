@@ -64,6 +64,7 @@ namespace Blog.DataAccess
                 category.HasAlternateKey(c=>c.Alias)
                 .HasName("Unique_Alias");
                 category.Property(c=>c.Description).IsRequired();
+                category.Property(c=>c.Name).IsRequired();
                 category.Property(c=>c.CreatedDate)
                         .HasDefaultValue(TimeConstants.EpochStart);
                 category.Property(c=>c.LastModifiedDate)
