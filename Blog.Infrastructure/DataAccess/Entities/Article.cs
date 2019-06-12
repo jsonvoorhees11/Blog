@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Blog.DataAccess.Entities
 {
@@ -15,9 +16,13 @@ namespace Blog.DataAccess.Entities
         public long CreatedDate { get; set; }
         public long LastModifiedDate { get; set; }
         public string AuthorId{get;set;}
+        
         public User Author{get;set;}
+        
         public IEnumerable<ArticleTag> ArticleTags {get;set;}
+        
         public IEnumerable<Comment> Comments {get;set;}
+        
         public IEnumerable<ArticleCategory> ArticleCategories{get;set;}
 
     }

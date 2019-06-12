@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Blog.DataAccess;
+using Blog.DataAccess.Entities;
+using Blog.DataAccess.Seeding;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SourceCodes
 {
@@ -28,9 +33,26 @@ namespace SourceCodes
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<IDataSeeding, DataSeedingFromJson>();
+            services.AddDefaultIdentity<User>().AddEntityFrameworkStores<BlogDbContext>();
             services.AddEntityFrameworkSqlServer().AddDbContext<BlogDbContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("BlogConnectionString"))
             );
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration.GetValue<string>("JWTSecretKey"))
+                        )
+                    };
+                });
             
         }
 
@@ -48,6 +70,9 @@ namespace SourceCodes
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
+
             app.UseMvc();
         }
     }

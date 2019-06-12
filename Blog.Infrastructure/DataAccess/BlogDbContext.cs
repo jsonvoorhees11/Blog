@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Blog.DataAccess.Entities;
 using Blog.DataAccess.Constants;
 using Blog.DataAccess.Seeding;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Blog.DataAccess
 {
-    public class BlogDbContext : DbContext
+    public class BlogDbContext : IdentityDbContext
     {
         private readonly IDataSeeding _dataSeeding;
         public BlogDbContext(IDataSeeding dataSeeding, DbContextOptions<BlogDbContext> options):base(options)
@@ -19,12 +21,12 @@ namespace Blog.DataAccess
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Reader> Readers { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<ArticleCategory> ArticleCategory { get; set; }
         public DbSet<ArticleTag> ArticleTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ArticleCategory>(articleCategory =>
             {
                 articleCategory.HasKey(ac => new { ac.ArticleId, ac.CategoryId });
@@ -34,7 +36,7 @@ namespace Blog.DataAccess
                 articleCategory.HasOne(ac => ac.Category)
                 .WithMany(a => a.ArticleCategories)
                 .HasForeignKey(ac => ac.CategoryId);
-
+                
                 articleCategory.HasData(_dataSeeding.GetArticleCategories());
             });
 
@@ -116,15 +118,18 @@ namespace Blog.DataAccess
                 tag.HasAlternateKey(t=>t.Alias).HasName("Unique_Alias");
                 tag.Property(t=>t.CreatedDate)
                         .HasDefaultValue(TimeConstants.EpochStart);
-
-                tag.HasData(_dataSeeding.GetTags());
+                try{
+                    tag.HasData(_dataSeeding.GetTags());
+                }
+                catch(Exception ex){
+                    Console.WriteLine(JsonConvert.SerializeObject(_dataSeeding.GetTags()));
+                    Console.WriteLine(ex.StackTrace);
+                    throw;
+                }
             });
 
             modelBuilder.Entity<User>(user =>
             {
-                user.HasKey(m => m.Id);
-                user.HasAlternateKey(m => m.Email)
-                    .HasName("Unique_Email");
                 user.Property(m => m.CreatedDate)
                     .HasDefaultValue(TimeConstants.EpochStart);
                 user.Property(m => m.LastModifiedDate)
