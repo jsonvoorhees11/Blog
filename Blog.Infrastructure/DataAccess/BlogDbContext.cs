@@ -56,6 +56,7 @@ namespace Blog.DataAccess
             modelBuilder.Entity<Article>(article =>
             {
                 article.HasKey(m => m.Id);
+                article.Property(m=>m.Id).ValueGeneratedOnAdd();
                 article.Property(m => m.Title).IsRequired();
                 article.Property(m => m.Slug).IsRequired();
                 article
@@ -75,6 +76,7 @@ namespace Blog.DataAccess
 
             modelBuilder.Entity<Category>(category=>{
                 category.HasKey(c=>c.Id);
+                category.Property(c=>c.Id).ValueGeneratedOnAdd();
                 category.HasAlternateKey(c=>c.Alias)
                 .HasName("Unique_Alias");
                 category.Property(c=>c.Description).IsRequired();
@@ -92,6 +94,7 @@ namespace Blog.DataAccess
 
             modelBuilder.Entity<Comment>(comment=>{
                 comment.HasKey(c=>c.Id);
+                comment.Property(c=>c.Id).ValueGeneratedOnAdd();
                 comment.HasOne(c=>c.Reader)
                         .WithMany(r=>r.Comments)
                         .HasForeignKey(c=>c.ReaderId);
@@ -107,6 +110,7 @@ namespace Blog.DataAccess
 
             modelBuilder.Entity<Reader>(reader=>{
                 reader.HasKey(r=>r.Id);
+                reader.Property(c=>c.Id).ValueGeneratedOnAdd();
                 reader.Property(r=>r.Name).IsRequired();
                 reader.Property(r=>r.IpAddress).IsRequired();
 
@@ -115,6 +119,7 @@ namespace Blog.DataAccess
 
             modelBuilder.Entity<Tag>(tag=>{
                 tag.HasKey(t=>t.Id);
+                tag.Property(c=>c.Id).ValueGeneratedOnAdd();
                 tag.HasAlternateKey(t=>t.Alias).HasName("Unique_Alias");
                 tag.Property(t=>t.CreatedDate)
                         .HasDefaultValue(TimeConstants.EpochStart);
