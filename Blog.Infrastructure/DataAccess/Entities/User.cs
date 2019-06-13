@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Blog.DataAccess.Entities
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<string>
     {
         public long CreatedDate { get; set; }
         public long LastModifiedDate { get; set; }

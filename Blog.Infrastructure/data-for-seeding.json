@@ -36,7 +36,7 @@
         {
             "id":"4bcfe398-d377-43ce-a134-99f0823511d7",
             "title":"Rust is becoming another trend",
-            "slug":"how-net-compiler-work",
+            "slug":"rust-is-becoming-another-trend",
             "thumbnailImageUrl":"https://localhost:7070/api/fileUploader/rustland.png",
             "recap":"Rust is becoming another trend",
             "content":"Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
@@ -175,6 +175,26 @@
         {
             "id":"f6eb594c-4c06-4dec-9412-133c2d32a549",
             "email":"tech@reddit.com",
+            "createdDate":"1560182949",
+            "lastModifiedDate":"1560182949"
+        }
+    ],
+    "tags":[
+        {
+            "id":"3a045768-5dfc-4a46-b673-7d10f7da6ee8",
+            "alias":"dotnet",
+            "createdDate":"1560182949",
+            "lastModifiedDate":"1560182949"
+        },
+        {
+            "id":"46a0b627-93c7-4b95-a029-b788ad887b1e",
+            "alias":"js",
+            "createdDate":"1560182949",
+            "lastModifiedDate":"1560182949"
+        },
+        {
+            "id":"5a10c508-b548-42e7-a968-a487b66c6984",
+            "alias":"technical",
             "createdDate":"1560182949",
             "lastModifiedDate":"1560182949"
         }

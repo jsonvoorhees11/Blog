@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,10 +34,14 @@ namespace SourceCodes
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton<IDataSeeding, DataSeedingFromJson>();
-            services.AddDefaultIdentity<User>().AddEntityFrameworkStores<BlogDbContext>();
+            services.AddScoped<IDataSeeding, DataSeedingFromJson>();
+            services.AddDefaultIdentity<User>().AddEntityFrameworkStores<BlogDbContext>().AddDefaultTokenProviders();
             services.AddEntityFrameworkSqlServer().AddDbContext<BlogDbContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("BlogConnectionString"))
+                options => {
+                    options.UseSqlServer(Configuration.GetConnectionString("BlogConnectionString"));
+                    options.EnableSensitiveDataLogging();
+                }
+                
             );
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
