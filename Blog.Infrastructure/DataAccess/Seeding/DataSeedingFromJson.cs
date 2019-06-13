@@ -4,6 +4,7 @@ using System.IO;
 using Blog.DataAccess.Entities;
 using Blog.DataAccess.Constants;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Blog.DataAccess.Seeding
 {
@@ -22,6 +23,14 @@ namespace Blog.DataAccess.Seeding
             dataJsonString = File.ReadAllText(filePath);
 
             Data = JsonConvert.DeserializeObject<DataSeedingFromJsonDto>(dataJsonString);
+            IEnumerable<Category> categories = Data.Categories.Select(c=>{
+                if(string.IsNullOrEmpty(c.ParentId))
+                {
+                    c.ParentId = null;
+                }
+                return c;
+            });
+            Data.Categories = categories;
         }
         public IEnumerable<Article> GetArticles()
         {

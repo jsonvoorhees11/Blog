@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20190613020653_Init")]
+    [Migration("20190613155223_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,56 @@ namespace Blog.Infrastructure.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Articles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "9a574346-a3a5-4860-a3bd-54be358ba236",
+                            AuthorId = "f6eb594c-4c06-4dec-9412-133c2d32a549",
+                            Content = "I don't know how it works either",
+                            CreatedDate = 1560182949L,
+                            LastModifiedDate = 1560182949L,
+                            Recap = ".NET compiler is really complicated",
+                            Slug = "how-net-compiler-work",
+                            ThumbnailImageUrl = "https://localhost:7070/api/fileUploader/netcompiler.png",
+                            Title = "How .NET compiler work?"
+                        },
+                        new
+                        {
+                            Id = "47eef876-5eb2-442f-913c-6ad098864f9e",
+                            AuthorId = "87913df7-7dc9-45bb-a486-6be3a902f8c0",
+                            Content = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit",
+                            CreatedDate = 1560182949L,
+                            LastModifiedDate = 1560182949L,
+                            Recap = "Angular definitely",
+                            Slug = "angular-reactjs-and-vuejs-which-to-choose",
+                            ThumbnailImageUrl = "https://localhost:7070/api/fileUploader/angular-is-the-best.png",
+                            Title = "Angular, ReactJS and VueJs, which to choose?"
+                        },
+                        new
+                        {
+                            Id = "f2e240c4-3e7e-4c87-93ce-c95ffa2941c2",
+                            AuthorId = "f6eb594c-4c06-4dec-9412-133c2d32a549",
+                            Content = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga",
+                            CreatedDate = 1560182949L,
+                            LastModifiedDate = 1560182949L,
+                            Recap = ".NET Core is sky-rocketing",
+                            Slug = "the-rise-of-net-core",
+                            ThumbnailImageUrl = "https://localhost:7070/api/fileUploader/netcore.png",
+                            Title = "The rise of .NET Core"
+                        },
+                        new
+                        {
+                            Id = "4bcfe398-d377-43ce-a134-99f0823511d7",
+                            AuthorId = "f6eb594c-4c06-4dec-9412-133c2d32a549",
+                            Content = "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur",
+                            CreatedDate = 1560182949L,
+                            LastModifiedDate = 1560182949L,
+                            Recap = "Rust is becoming another trend",
+                            Slug = "rust-is-becoming-another-trend",
+                            ThumbnailImageUrl = "https://localhost:7070/api/fileUploader/rustland.png",
+                            Title = "Rust is becoming another trend"
+                        });
                 });
 
             modelBuilder.Entity("Blog.DataAccess.Entities.ArticleCategory", b =>
@@ -175,7 +225,7 @@ namespace Blog.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Alias")
-                        .HasName("Unique_Alias");
+                        .HasName("Unique_Category_Alias");
 
                     b.HasIndex("ParentId");
 
@@ -209,8 +259,7 @@ namespace Blog.Infrastructure.Migrations
                             CreatedDate = 1560182949L,
                             Description = "Articles about technical topics",
                             LastModifiedDate = 1560182949L,
-                            Name = "Technical",
-                            ParentId = ""
+                            Name = "Technical"
                         });
                 });
 
@@ -316,7 +365,7 @@ namespace Blog.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Alias")
-                        .HasName("Unique_Alias");
+                        .HasName("Unique_Tag_Alias");
 
                     b.ToTable("Tags");
 
@@ -331,14 +380,14 @@ namespace Blog.Infrastructure.Migrations
                         new
                         {
                             Id = "46a0b627-93c7-4b95-a029-b788ad887b1e",
-                            Alias = "front-end",
+                            Alias = "js",
                             CreatedDate = 1560182949L,
                             LastModifiedDate = 1560182949L
                         },
                         new
                         {
                             Id = "5a10c508-b548-42e7-a968-a487b66c6984",
-                            Alias = "js",
+                            Alias = "technical",
                             CreatedDate = 1560182949L,
                             LastModifiedDate = 1560182949L
                         });
@@ -394,7 +443,7 @@ namespace Blog.Infrastructure.Migrations
                         {
                             Id = "87913df7-7dc9-45bb-a486-6be3a902f8c0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "91af9383-88ec-401f-a2b6-ccba1a2ad2bf",
+                            ConcurrencyStamp = "58ddc1cc-0426-4657-8da6-6af807a39a27",
                             CreatedDate = 1560182949L,
                             Email = "lolgag@9gag.com",
                             EmailConfirmed = false,
@@ -407,7 +456,7 @@ namespace Blog.Infrastructure.Migrations
                         {
                             Id = "f6eb594c-4c06-4dec-9412-133c2d32a549",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "45d37d94-d61e-4893-907f-7e7dcc560d7c",
+                            ConcurrencyStamp = "d7a79900-7ca0-447b-9b95-b9c675d927f9",
                             CreatedDate = 1560182949L,
                             Email = "tech@reddit.com",
                             EmailConfirmed = false,

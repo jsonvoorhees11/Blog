@@ -62,7 +62,7 @@ namespace Blog.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                    table.UniqueConstraint("Unique_Alias", x => x.Alias);
+                    table.UniqueConstraint("Unique_Category_Alias", x => x.Alias);
                     table.ForeignKey(
                         name: "FK_Categories_Categories_ParentId",
                         column: x => x.ParentId,
@@ -96,7 +96,7 @@ namespace Blog.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
-                    table.UniqueConstraint("Unique_Alias", x => x.Alias);
+                    table.UniqueConstraint("Unique_Tag_Alias", x => x.Alias);
                 });
 
             migrationBuilder.CreateTable(
@@ -337,7 +337,7 @@ namespace Blog.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Alias", "CreatedDate", "Description", "LastModifiedDate", "Name", "ParentId" },
-                values: new object[] { "289ebc79-5307-4c89-ac1b-025a780eaa73", "TECHNICAL", 1560182949L, "Articles about technical topics", 1560182949L, "Technical", "" });
+                values: new object[] { "289ebc79-5307-4c89-ac1b-025a780eaa73", "TECHNICAL", 1560182949L, "Articles about technical topics", 1560182949L, "Technical", null });
 
             migrationBuilder.InsertData(
                 table: "Readers",
@@ -354,8 +354,8 @@ namespace Blog.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { "3a045768-5dfc-4a46-b673-7d10f7da6ee8", "dotnet", 1560182949L, 1560182949L },
-                    { "46a0b627-93c7-4b95-a029-b788ad887b1e", "front-end", 1560182949L, 1560182949L },
-                    { "5a10c508-b548-42e7-a968-a487b66c6984", "js", 1560182949L, 1560182949L }
+                    { "46a0b627-93c7-4b95-a029-b788ad887b1e", "js", 1560182949L, 1560182949L },
+                    { "5a10c508-b548-42e7-a968-a487b66c6984", "technical", 1560182949L, 1560182949L }
                 });
 
             migrationBuilder.InsertData(
@@ -363,22 +363,19 @@ namespace Blog.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "LastModifiedDate", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "87913df7-7dc9-45bb-a486-6be3a902f8c0", 0, "91af9383-88ec-401f-a2b6-ccba1a2ad2bf", 1560182949L, "lolgag@9gag.com", false, 1560182949L, false, null, null, null, null, null, false, null, false, null },
-                    { "f6eb594c-4c06-4dec-9412-133c2d32a549", 0, "45d37d94-d61e-4893-907f-7e7dcc560d7c", 1560182949L, "tech@reddit.com", false, 1560182949L, false, null, null, null, null, null, false, null, false, null }
+                    { "87913df7-7dc9-45bb-a486-6be3a902f8c0", 0, "58ddc1cc-0426-4657-8da6-6af807a39a27", 1560182949L, "lolgag@9gag.com", false, 1560182949L, false, null, null, null, null, null, false, null, false, null },
+                    { "f6eb594c-4c06-4dec-9412-133c2d32a549", 0, "d7a79900-7ca0-447b-9b95-b9c675d927f9", 1560182949L, "tech@reddit.com", false, 1560182949L, false, null, null, null, null, null, false, null, false, null }
                 });
 
             migrationBuilder.InsertData(
-                table: "ArticleTags",
-                columns: new[] { "ArticleId", "TagId" },
+                table: "Articles",
+                columns: new[] { "Id", "AuthorId", "Content", "CreatedDate", "LastModifiedDate", "Recap", "Slug", "ThumbnailImageUrl", "Title" },
                 values: new object[,]
                 {
-                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "3a045768-5dfc-4a46-b673-7d10f7da6ee8" },
-                    { "4bcfe398-d377-43ce-a134-99f0823511d7", "3a045768-5dfc-4a46-b673-7d10f7da6ee8" },
-                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "46a0b627-93c7-4b95-a029-b788ad887b1e" },
-                    { "4bcfe398-d377-43ce-a134-99f0823511d7", "46a0b627-93c7-4b95-a029-b788ad887b1e" },
-                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "5a10c508-b548-42e7-a968-a487b66c6984" },
-                    { "47eef876-5eb2-442f-913c-6ad098864f9e", "5a10c508-b548-42e7-a968-a487b66c6984" },
-                    { "f2e240c4-3e7e-4c87-93ce-c95ffa2941c2", "5a10c508-b548-42e7-a968-a487b66c6984" }
+                    { "47eef876-5eb2-442f-913c-6ad098864f9e", "87913df7-7dc9-45bb-a486-6be3a902f8c0", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit", 1560182949L, 1560182949L, "Angular definitely", "angular-reactjs-and-vuejs-which-to-choose", "https://localhost:7070/api/fileUploader/angular-is-the-best.png", "Angular, ReactJS and VueJs, which to choose?" },
+                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "f6eb594c-4c06-4dec-9412-133c2d32a549", "I don't know how it works either", 1560182949L, 1560182949L, ".NET compiler is really complicated", "how-net-compiler-work", "https://localhost:7070/api/fileUploader/netcompiler.png", "How .NET compiler work?" },
+                    { "f2e240c4-3e7e-4c87-93ce-c95ffa2941c2", "f6eb594c-4c06-4dec-9412-133c2d32a549", "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga", 1560182949L, 1560182949L, ".NET Core is sky-rocketing", "the-rise-of-net-core", "https://localhost:7070/api/fileUploader/netcore.png", "The rise of .NET Core" },
+                    { "4bcfe398-d377-43ce-a134-99f0823511d7", "f6eb594c-4c06-4dec-9412-133c2d32a549", "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur", 1560182949L, 1560182949L, "Rust is becoming another trend", "rust-is-becoming-another-trend", "https://localhost:7070/api/fileUploader/rustland.png", "Rust is becoming another trend" }
                 });
 
             migrationBuilder.InsertData(
@@ -391,25 +388,39 @@ namespace Blog.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Comments",
-                columns: new[] { "Id", "ArticleId", "Content", "CreatedDate", "ReaderId", "Recap" },
-                values: new object[,]
-                {
-                    { "351ecc42-2de5-4835-bdb4-dc0da4233acc", "9a574346-a3a5-4860-a3bd-54be358ba236", "Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain", 1560182949L, "27fe5a64-0032-4d11-9225-ecc9d54b8a52", "It's basic" },
-                    { "4306d506-b505-4581-886f-016eda2bcfa9", "47eef876-5eb2-442f-913c-6ad098864f9e", "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis", 1560182949L, "27fe5a64-0032-4d11-9225-ecc9d54b8a52", "I prefer Angular" },
-                    { "a4668006-e3f5-4038-a852-6c764913a976", "47eef876-5eb2-442f-913c-6ad098864f9e", "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam", 1560182949L, "c4fa13de-f446-411c-9ed9-d6a5119b7b96", "This article is useful" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "ArticleCategory",
                 columns: new[] { "ArticleId", "CategoryId" },
                 values: new object[,]
                 {
-                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "15838af4-3566-4438-a7fa-5dbc2d97af80" },
                     { "47eef876-5eb2-442f-913c-6ad098864f9e", "15838af4-3566-4438-a7fa-5dbc2d97af80" },
+                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "15838af4-3566-4438-a7fa-5dbc2d97af80" },
                     { "f2e240c4-3e7e-4c87-93ce-c95ffa2941c2", "15838af4-3566-4438-a7fa-5dbc2d97af80" },
                     { "f2e240c4-3e7e-4c87-93ce-c95ffa2941c2", "f9e04123-f0c7-404f-b7bd-c0c03db0e5c3" },
                     { "4bcfe398-d377-43ce-a134-99f0823511d7", "f9e04123-f0c7-404f-b7bd-c0c03db0e5c3" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ArticleTags",
+                columns: new[] { "ArticleId", "TagId" },
+                values: new object[,]
+                {
+                    { "47eef876-5eb2-442f-913c-6ad098864f9e", "5a10c508-b548-42e7-a968-a487b66c6984" },
+                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "3a045768-5dfc-4a46-b673-7d10f7da6ee8" },
+                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "5a10c508-b548-42e7-a968-a487b66c6984" },
+                    { "9a574346-a3a5-4860-a3bd-54be358ba236", "46a0b627-93c7-4b95-a029-b788ad887b1e" },
+                    { "f2e240c4-3e7e-4c87-93ce-c95ffa2941c2", "5a10c508-b548-42e7-a968-a487b66c6984" },
+                    { "4bcfe398-d377-43ce-a134-99f0823511d7", "3a045768-5dfc-4a46-b673-7d10f7da6ee8" },
+                    { "4bcfe398-d377-43ce-a134-99f0823511d7", "46a0b627-93c7-4b95-a029-b788ad887b1e" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Comments",
+                columns: new[] { "Id", "ArticleId", "Content", "CreatedDate", "ReaderId", "Recap" },
+                values: new object[,]
+                {
+                    { "a4668006-e3f5-4038-a852-6c764913a976", "47eef876-5eb2-442f-913c-6ad098864f9e", "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam", 1560182949L, "c4fa13de-f446-411c-9ed9-d6a5119b7b96", "This article is useful" },
+                    { "4306d506-b505-4581-886f-016eda2bcfa9", "47eef876-5eb2-442f-913c-6ad098864f9e", "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis", 1560182949L, "27fe5a64-0032-4d11-9225-ecc9d54b8a52", "I prefer Angular" },
+                    { "351ecc42-2de5-4835-bdb4-dc0da4233acc", "9a574346-a3a5-4860-a3bd-54be358ba236", "Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain", 1560182949L, "27fe5a64-0032-4d11-9225-ecc9d54b8a52", "It's basic" }
                 });
 
             migrationBuilder.CreateIndex(

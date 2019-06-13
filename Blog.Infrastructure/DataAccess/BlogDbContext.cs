@@ -80,7 +80,7 @@ namespace Blog.DataAccess
                 category.HasKey(c => c.Id);
                 category.Property(c => c.Id).ValueGeneratedOnAdd();
                 category.HasAlternateKey(c => c.Alias)
-                .HasName("Unique_Alias");
+                .HasName("Unique_Category_Alias");
                 category.Property(c => c.Description).IsRequired();
                 category.Property(c => c.Name).IsRequired();
                 category.Property(c => c.CreatedDate)
@@ -89,7 +89,8 @@ namespace Blog.DataAccess
                         .HasDefaultValue(TimeConstants.EpochStart);
                 category.HasOne(c => c.Parent)
                         .WithMany(pc => pc.Children)
-                        .HasForeignKey(c => c.ParentId);
+                        .HasForeignKey(c => c.ParentId)
+                        .IsRequired(false);
 
                 category.HasData(_dataSeeding.GetCategories().ToList());
             });
@@ -125,7 +126,7 @@ namespace Blog.DataAccess
             {
                 tag.HasKey(t => t.Id);
                 tag.Property(c => c.Id).ValueGeneratedOnAdd();
-                tag.HasAlternateKey(t => t.Alias).HasName("Unique_Alias");
+                tag.HasAlternateKey(t => t.Alias).HasName("Unique_Tag_Alias");
                 tag.Property(t => t.CreatedDate)
                         .HasDefaultValue(TimeConstants.EpochStart);
 
