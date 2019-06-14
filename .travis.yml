@@ -1,8 +1,16 @@
 language: csharp
-dist: trusty
+dist: xenial
 mono: none
-dotnet: 2.2.0
-script: 
+dotnet: 2.2
+os:
+  - linux
+branches:
+  only:
+    - master
+
+before_script:
   - dotnet restore
+
+script: 
   - dotnet build
   - dotnet test Blog.Test/Blog.Test.csproj
