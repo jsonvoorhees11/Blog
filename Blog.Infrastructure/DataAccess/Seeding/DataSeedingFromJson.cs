@@ -18,9 +18,7 @@ namespace Blog.DataAccess.Seeding
                     System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
             folderPath = folderPath.Split(':')[1];
             string filePath = Path.Combine(folderPath, "data-for-seeding.json");
-            string dataJsonString = "";
-
-            dataJsonString = File.ReadAllText(filePath);
+            string dataJsonString = File.ReadAllText(filePath);
 
             Data = JsonConvert.DeserializeObject<DataSeedingFromJsonDto>(dataJsonString);
             IEnumerable<Category> categories = Data.Categories.Select(c=>{
