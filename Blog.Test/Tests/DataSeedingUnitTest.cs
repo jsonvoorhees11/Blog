@@ -4,39 +4,60 @@ using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Blog.DataAccess.Entities;
+using System;
 
 namespace Blog.Test
 {
     public class DataSeedingUnitTest
     {
-        private DataSeedingFromJson _dataSeeding;
-        private string _dataSeedingSourceJsonString;
-        private DataSeedingFromJsonDto _dataSeedingSource;
         public DataSeedingUnitTest()
         {
-            _dataSeeding = new DataSeedingFromJson();
-            _dataSeedingSourceJsonString = GetDataSeedingSourceJsonString();
-            _dataSeedingSource = JsonConvert
-                                .DeserializeObject<DataSeedingFromJsonDto>(_dataSeedingSourceJsonString);
+                                
         }
 
         [Fact]
         public void DataSeedingFromJson_ParentIdShouldBeNull_WhenParentIdBlank()
         {
             //Arrange
-            string[] categoryIdsWithBlankParentId = _dataSeedingSource.Categories
+            var dataSourceJsonString = GetDataSeedingSourceJsonString();
+            var dataSourceFromJson = JsonConvert
+                                .DeserializeObject<DataSeedingFromJsonDto>(dataSourceJsonString);
+            var dataSource = new DataSeedingFromJson();
+
+            string[] categoryIdsWithBlankParentId = dataSourceFromJson.Categories
                                                     .Where(c => c.ParentId == string.Empty)
                                                     .Select(c => c.Id).ToArray();
-
             //Act
-            var actual = _dataSeeding.GetCategories().Where(c => categoryIdsWithBlankParentId.Contains(c.Id)).Select(p => p.ParentId).First();
+            var actual = dataSource.GetCategories().Where(c => categoryIdsWithBlankParentId.Contains(c.Id)).Select(p => p.ParentId).First();
 
             //Assert
             Assert.Null(actual);
         }
 
         [Theory]
-        public
+        [InlineData("Articles")]
+        [InlineData("ArticleCategories")]
+        [InlineData("ArticleTags")]
+        [InlineData("Categories")]
+        [InlineData("Comments")]
+        [InlineData("Readers")]
+        [InlineData("Tags")]
+        [InlineData("Users")]
+        public void DataSeedingFromJson_DataMustBePopulated_WhenJsonStringValid(string propertyName){
+            //Arrange
+            var dataSourceJsonString = GetDataSeedingSourceJsonString();
+            var dataSourceFromJson = JsonConvert
+                                .DeserializeObject<DataSeedingFromJsonDto>(dataSourceJsonString);
+            var dataSource = new DataSeedingFromJson().Data;
+            
+            //Act
+            var property = dataSource.GetType().GetProperty(propertyName);
+            var propertyValue = property.GetValue(dataSource,null);
+
+            //Assert
+            Assert.NotNull(propertyValue);
+        }
 
         #region Get json string of seeding data
         private string GetDataSeedingSourceJsonString()
