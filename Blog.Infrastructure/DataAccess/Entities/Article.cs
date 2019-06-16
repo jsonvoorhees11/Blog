@@ -6,6 +6,13 @@ namespace Blog.DataAccess.Entities
 {
     public class Article
     {
+        public Article()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+        public Article(string id){
+            Id=id;
+        }
         public string Id { get; set; }
         public string Title { get; set; }
         public string Slug { get; set; }

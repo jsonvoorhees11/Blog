@@ -28,10 +28,57 @@ namespace Blog.Test{
             
         }
 
+        [Fact]
+        public void CreateNewArticle_ShouldReturnNewArticleId_WhenModelValid(){
+
+            //Arrange
+            IArticleRepository articleRepository = GetInMemoryArticleRepository();   
+            
+            var newArticle = new Article("17e1328f-4835-4356-ba65-19a90cd4e294"){
+                                Title="Test article", 
+                                Slug="test-article-4835", 
+                                ThumbnailImageUrl="https://localhost:5050/api/images/thumb.png",
+                                Recap="Just a test article",
+                                Content="Just a test article, nothing special",
+                                CreatedDate=1560658917,
+                                LastModifiedDate=1560658917,
+                                AuthorId="fd12e31b-6438-4272-8830-c397a3196dfb"
+                            };
+            //Act
+            var newestArticleId = articleRepository.Insert(newArticle).Id;
+
+            //Assert
+            Assert.Equal("17e1328f-4835-4356-ba65-19a90cd4e294", newestArticleId);            
+        }
+
+        [Fact]
+        public void UpdateArticle_ShoulUpdateSuccessfully_WhenModelIsValid(){
+            //Arrange
+            IArticleRepository articleRepository = GetInMemoryArticleRepository();  
+            Article articleToUpdate = JsonConvert.DeserializeObject<Article>(@"{
+                        ""id"":""9a574346-a3a5-4860-a3bd-54be358ba236"",
+                        ""title"":""How .NET compiler work edited?"",
+                        ""slug"":""how-net-compiler-work-edited-a3a5"",
+                        ""thumbnailImageUrl"":""https://localhost:7070/api/fileUploader/netcompiler.png"",
+                        ""recap"":"".NET compiler is really complicated"",
+                        ""content"":""I don't know how it works either"",
+                        ""createdDate"": ""1560182949"",
+                        ""lastModifiedDate"":""1560182949"",
+                        ""authorId"":""f6eb594c-4c06-4dec-9412-133c2d32a549""
+                    }");
+
+            //Act
+            articleRepository.Update(articleToUpdate);
+            string updatedTitle = articleRepository.GetById("9a574346-a3a5-4860-a3bd-54be358ba236").Title;
+
+            //Assert
+            Assert.Equal("How .NET compiler work edited?", updatedTitle);
+        }
+
         private IArticleRepository GetInMemoryArticleRepository(){
             var options = new DbContextOptionsBuilder<BlogDbContext>()
                             .UseInMemoryDatabase(databaseName: "InMemory_Articles")
-                            .Options;                                
+                            .Options;    
             var articles = GetArticles();
             var dataSeedingMock = new Mock<IDataSeeding>();
             dataSeedingMock.Setup(d=>d.GetArticles()).Returns(articles);
@@ -46,7 +93,6 @@ namespace Blog.Test{
             BlogDbContext blogDbContext = new BlogDbContext(dataSeedingMock.Object, options);
             blogDbContext.Database.EnsureDeleted();
             blogDbContext.Database.EnsureCreated();
-            blogDbContext.SaveChanges();
             return new ArticleRepository(blogDbContext);
             
         }
