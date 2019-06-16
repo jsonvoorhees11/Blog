@@ -8,12 +8,12 @@ namespace Blog.Services
 {
     public class ArticleService : IArticleService
     {
-        private readonly IGenericRepository<Article> _repository;
+        private readonly IArticleRepository _repository;
         private readonly IMapper<Article, ArticleDto> _mapper;
         public ArticleService(){
 
         }
-        public ArticleService(IGenericRepository<Article> repo, IMapper<Article, ArticleDto> mapper){
+        public ArticleService(IArticleRepository repo, IMapper<Article, ArticleDto> mapper){
             _repository = repo;
             _mapper = mapper;
         }

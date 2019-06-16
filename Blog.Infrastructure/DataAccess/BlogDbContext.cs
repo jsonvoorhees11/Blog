@@ -12,6 +12,9 @@ namespace Blog.DataAccess
     public class BlogDbContext : IdentityDbContext
     {
         private readonly IDataSeeding _dataSeeding;
+        public BlogDbContext(DbContextOptions<BlogDbContext> options):base(options){
+            
+        }
         public BlogDbContext(IDataSeeding dataSeeding, DbContextOptions<BlogDbContext> options) : base(options)
         {
             _dataSeeding = dataSeeding;
