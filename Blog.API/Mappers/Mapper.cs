@@ -14,5 +14,12 @@ namespace Blog.Mappers{
         public Article MapDtoToEntity(ArticleDto dto){
             return new Article();
         }
+        public IEnumerable<ArticleDto> MapEntityToDto(IEnumerable<Article> articleEntities){
+            return new List<ArticleDto>();
+        }
+        public IEnumerable<Article> MapDtoToEntity(IEnumerable<ArticleDto> articleEntities){
+            return new List<Article>();
+        }
+
     }
 }

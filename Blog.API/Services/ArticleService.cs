@@ -4,17 +4,20 @@ using Blog.Models;
 using Blog.DataAccess.Repositories;
 using Blog.DataAccess.Entities;
 using Blog.Mappers;
+using Blog.DataAccess;
+using System.Linq;
+
 namespace Blog.Services
 {
     public class ArticleService : IArticleService
     {
-        private readonly IArticleRepository _repository;
+        private readonly BlogDbContext _dbContext;
         private readonly IMapper<Article, ArticleDto> _mapper;
         public ArticleService(){
 
         }
-        public ArticleService(IArticleRepository repo, IMapper<Article, ArticleDto> mapper){
-            _repository = repo;
+        public ArticleService(BlogDbContext dbContext, IMapper<Article, ArticleDto> mapper){
+            _dbContext = dbContext;
             _mapper = mapper;
         }
         public ArticleDto CreateArticle(ArticleDto newArticle)
@@ -34,7 +37,9 @@ namespace Blog.Services
 
         public IEnumerable<ArticleDto> GetArticles()
         {
-            return new List<ArticleDto>();
+            var articleEntities = _dbContext.Articles.ToList();
+            var articleDtos = _mapper.MapEntityToDto(articleEntities);
+            return articleDtos;
         }
 
         public ArticleDto UpdateArticleById(ArticleDto updatedArticle)
