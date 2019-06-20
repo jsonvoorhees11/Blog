@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Blog.DataAccess.Entities;
 using Blog.Mappers;
 using Blog.Models;
@@ -10,7 +11,6 @@ namespace Blog.Test{
         public void MappingArticleToArticleDto_ShouldReturnArticleDto_WhenArticleValid()
         {
         //Arrange
-            var articleMapper = new ArticleMapper();
             var articleJsonString = @"{""id"":""9a574346-a3a5-4860-a3bd-54be358ba236"",
                         ""title"":""How .NET compiler work?"",
                         ""slug"":""how-net-compiler-work"",
@@ -27,7 +27,8 @@ namespace Blog.Test{
                         ""lastModifiedDate"":""1560182949""}";  
 
             var article = JsonConvert.DeserializeObject<Article>(articleJsonString);
-            var user = JsonConvert.DeserializeObject<UserDto>(userJsonString);
+            var user = JsonConvert.DeserializeObject<User>(userJsonString);
+            var articleMapper = new ArticleMapper(user);
             var expected = new ArticleDto{
                 Id="9a574346-a3a5-4860-a3bd-54be358ba236",
                 Slug="how-net-compiler-work",
@@ -36,7 +37,8 @@ namespace Blog.Test{
                 Content="I don't know how it works either",
                 CreatedDate=1560182949,
                 LastModifiedDate=1560182949,
-                Author= user
+                Author= new UserDto { Id = user.Id, Email = user.Email, CreatedDate = user.CreatedDate},
+                Comments = new List<CommentDto>()
             }; 
         //Act
             var actual = articleMapper.MapEntityToDto(article);

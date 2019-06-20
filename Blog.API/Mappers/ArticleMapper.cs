@@ -1,15 +1,37 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Blog.DataAccess;
 using Blog.DataAccess.Entities;
 using Blog.Models;
 
 namespace Blog.Mappers{
     public class ArticleMapper : IMapper<Article, ArticleDto>{
+        private User _user;
         public ArticleMapper()
         {
+            
+        }
+        public ArticleMapper(User user){
+            _user = user;
         }
         public ArticleDto MapEntityToDto(Article entity){
-            return new ArticleDto();
+            ArticleDto dto = new ArticleDto(){
+                Id = entity.Id,
+                Title = entity.Title,
+                Slug = entity.Slug,
+                ThumbnailImageUrl = entity.ThumbnailImageUrl,
+                Recap = entity.Recap,
+                Content = entity.Content,
+                CreatedDate = entity.CreatedDate,
+                LastModifiedDate = entity.LastModifiedDate,
+                Author = new UserDto{
+                     Email = _user.Email,
+                     Id = _user.Id,
+                     CreatedDate = _user.CreatedDate
+                }
+            };
+            return dto;
         }
         public Article MapDtoToEntity(ArticleDto dto){
             return new Article();
