@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Blog.DataAccess;
 using Blog.DataAccess.Entities;
 using Blog.DataAccess.Seeding;
+using Blog.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,7 @@ namespace SourceCodes
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IDataSeeding, DataSeedingFromJson>();
+            services.AddScoped<IArticleService, ArticleService>();
             services.AddDefaultIdentity<User>().AddEntityFrameworkStores<BlogDbContext>().AddDefaultTokenProviders();
             services.AddEntityFrameworkSqlServer().AddDbContext<BlogDbContext>(
                 options => {
