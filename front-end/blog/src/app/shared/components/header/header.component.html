@@ -1,0 +1,27 @@
+<header class="site-header">
+  <div class="wrapper">
+    <div class="row site-title-wrapper">
+      <div class="col-sm-8">
+        <a class="site-title"></a>
+        <span class="site-subtitle">JsonVoorhees</span>
+      </div>
+      <div class ="col-sm-4 text-right site-search">
+          <form action="/search.html" method="get">
+            <div class="input-group">
+              <input type="text" id="search" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button class="btn" type="submit"><i><fa-icon [icon]="['fas','search']"></fa-icon></i></button>
+              </span>
+            </div>
+          </form>
+      </div>
+    </div>
+    <nav>
+      <ul class="nav-category">
+        <li *ngFor="let category of categoryList">
+          <a routerLink="/articles/category/{{category.id}}">{{category.alias}}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

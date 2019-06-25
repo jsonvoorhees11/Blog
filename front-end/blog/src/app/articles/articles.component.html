@@ -1,0 +1,22 @@
+<ul class="post-list">
+  <li *ngFor="let item of articleList">
+    <article>
+      <a routerLink="/article/{{item.slug}}">
+        <h2>{{item.title}}</h2>
+      </a>
+      <div class="post-recap">
+        <p>{{item.recap}}</p>
+      </div>
+      <div class="post-meta-container">
+        <span class="post-author">{{item.author.email}}</span>
+        <span class="post-date">{{item.lastModifiedDate | date}}</span>
+      </div>
+      <div>
+        <br>
+        <div class="post-tags">
+            <a href="/tags#grab" *ngFor="let tag of item.tags" class="label tags-label">{{tag.alias}}</a>
+        </div>
+      </div>
+    </article>
+  </li>
+</ul>

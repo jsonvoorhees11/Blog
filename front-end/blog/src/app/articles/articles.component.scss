@@ -1,0 +1,53 @@
+.post-list {
+  font-size: 18px;
+  line-height: 1.5;
+  list-style: none;
+  margin-left: 0; }
+  .post-list > li {
+    margin: 50px auto;
+    padding-bottom: 50px; }
+    .post-list > li:not(:last-child) {
+      border-bottom: 1px solid #ccd6dd; }
+    .post-list > li:first-child {
+      margin: 25px auto; }
+  .post-list .post-author-thumbnail {
+    margin-top: -24px; }
+  .post-list .cover-photo {
+    margin: 0 0 15px 0; }
+
+.post-recap {
+  margin-bottom: 20px;
+}
+
+.post-meta-container {
+  display: inline-block; }
+
+.post-meta {
+  color: #898d97;
+  display: block;
+  font-weight: 300;
+  text-align: center; }
+
+.post-tags {
+  margin-top: 10px; }
+
+.post-author {
+  display: block;
+  font-size: 15.75px;
+  padding-top: 5px; }
+
+.post-date {
+  color: #898d97;
+  display: block;
+  font-size: 13.5px; }
+
+.tags-label {
+  padding: 0.3em 0.6em;
+  font-size: 13px;
+  background: none;
+  border: 1px solid #488be4;
+  margin-right: 10px;
+  color: #488be4; }
+  .tags-label:hover {
+    background-color: #488be4;
+    color: #fff; }

@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+$_MAIN_COLOR: #2f4466;
+
+body, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, hr,
+dl, dd, ol, ul, figure {
+  margin: 0;
+  padding: 0;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+a {
+  color: $_MAIN_COLOR;
+  transition: color .3s;
+  text-decoration: none; }
+  a:hover {
+    color: #111;
+    text-decoration: none; }
+.btn {
+  background: none;
+  border: 1px solid $_MAIN_COLOR;
+  color: $_MAIN_COLOR;
+  border-radius: 3px;
+  font-weight: 400; }
+  .btn:hover {
+    background-color: $_MAIN_COLOR;
+    color: #fff; }
+
+.wrapper {
+  max-width: -webkit-calc(800px - (30px * 2));
+  max-width: calc(800px - (30px * 2));
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 30px;
+  padding-left: 30px; }
+  @media screen and (max-width: 768px) {
+    .wrapper {
+      max-width: -webkit-calc(800px - (30px));
+      max-width: calc(800px - (30px));
+      padding-right: 15px;
+      padding-left: 15px; }
+}
+
