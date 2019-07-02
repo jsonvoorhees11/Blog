@@ -6,8 +6,10 @@ namespace Blog.Services{
     public interface IArticleService
     {
         Task<IEnumerable<ArticleDto>> GetArticles();
-        ArticleDto GetArticleById(string id);
-        ArticleDto UpdateArticleById(ArticleDto updatedArticle);
+        Task<IEnumerable<ArticleDto>> GetArticlesByCategory(string categoryId);
+        Task<IEnumerable<ArticleDto>> GetArticlesByTag(string tagID);
+        Task<ArticleDto> GetArticleBySlug(string slug);
+        Task<ArticleDto> UpdateArticleById(ArticleDto updatedArticle);
         ArticleDto CreateArticle(ArticleDto newArticle);
         string DeleteArticle(string articleID);
     }

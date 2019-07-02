@@ -14,10 +14,12 @@ namespace Blog.Services
     public class ArticleService : IArticleService
     {
         private readonly BlogDbContext _dbContext;
-        public ArticleService(){
+        public ArticleService()
+        {
 
         }
-        public ArticleService(BlogDbContext dbContext){
+        public ArticleService(BlogDbContext dbContext)
+        {
             _dbContext = dbContext;
         }
         public ArticleDto CreateArticle(ArticleDto newArticle)
@@ -30,56 +32,102 @@ namespace Blog.Services
             throw new NotImplementedException();
         }
 
-        public ArticleDto GetArticleById(string id)
+        public async Task<ArticleDto> GetArticleBySlug(string slug)
         {
-            throw new NotImplementedException();
+            var articlesQuery = GetArticlesQuery();
+            var articleEntity = articlesQuery.First(a=>a.Slug==slug);
+            var result = MapArticleToDto(articleEntity);
+            return result;
         }
 
         public async Task<IEnumerable<ArticleDto>> GetArticles()
         {
-            var articleEntities = _dbContext.Articles
-                                    .Include(a => a.Author)
-                                    .Include(a=>a.ArticleTags).ThenInclude(t=>t.Tag)
-                                    .Include(a=>a.ArticleCategories).ThenInclude(c=>c.Category)
-                                    .ToList();
+            var articlesQuery = GetArticlesQuery();
+            var articleEntities = articlesQuery.ToList();
             var result = new List<ArticleDto>();
-            foreach (var item in articleEntities)
+            foreach (var entity in articleEntities)
             {
-                ArticleDto article = new ArticleDto{
-                    Id = item.Id,
-                    Title = item.Title,
-                    Slug = item.Slug,
-                    ThumbnailImageUrl = item.ThumbnailImageUrl,
-                    Recap = item.Recap,
-                    Content = item.Content,
-                    Author = new UserDto{
-                        Id = item.Author.Id,
-                        Email = item.Author.Email,
-                        CreatedDate = item.Author.CreatedDate,
-                        WrittenArticles = null
-                    },
-                    Tags = item.ArticleTags.Select(a=>a.Tag)
-                            .Select(t=> new TagDto{
-                                Id = t.Id,
-                                Alias = t.Alias
-                            }),
-                    Categories = item.ArticleCategories.Select(a=>a.Category)
-                            .Select(t=>new CategoryDto{
-                                Id = t.Id,
-                                Description = t.Description,
-                                ParentId = t.ParentId,
-                            }),
-                    //Load comment later
-                    Comments = new List<CommentDto>()
-                };
+                ArticleDto article = MapArticleToDto(entity);
                 result.Add(article);
             }
             return result;
         }
 
-        public ArticleDto UpdateArticleById(ArticleDto updatedArticle)
+        public async Task<IEnumerable<ArticleDto>> GetArticlesByCategory(string categoryId){
+            var articlesQuery = GetArticlesQuery();
+            var articleEntities = articlesQuery
+                                    .Where(a=>a.ArticleCategories.Select(ac=>ac.CategoryId).Contains(categoryId))
+                                    .ToList();
+            var result = new List<ArticleDto>();
+            foreach (var entity in articleEntities)
+            {
+                ArticleDto article = MapArticleToDto(entity);
+                result.Add(article);
+            }
+            return result;
+        }
+
+        public async Task<IEnumerable<ArticleDto>> GetArticlesByTag(string tagId){
+            var articlesQuery = GetArticlesQuery();
+            var articleEntities = articlesQuery
+                                    .Where(a=>a.ArticleTags.Select(at=>at.TagId).Contains(tagId))
+                                    .ToList();
+            
+            var result = new List<ArticleDto>();
+            foreach (var entity in articleEntities)
+            {
+                ArticleDto article = MapArticleToDto(entity);
+                result.Add(article);
+            }
+            return result;
+
+        }
+
+        public async Task<ArticleDto> UpdateArticleById(ArticleDto updatedArticle)
         {
             throw new NotImplementedException();
+        }
+
+        private IQueryable<Article> GetArticlesQuery(){
+            return _dbContext.Articles
+                            .Include(a => a.Author)
+                            .Include(a => a.ArticleTags).ThenInclude(t => t.Tag)
+                            .Include(a => a.ArticleCategories).ThenInclude(c => c.Category);
+        }
+        private ArticleDto MapArticleToDto(Article entity)
+        {
+            ArticleDto result = new ArticleDto
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                Slug = entity.Slug,
+                ThumbnailImageUrl = entity.ThumbnailImageUrl,
+                Recap = entity.Recap,
+                Content = entity.Content,
+                Author = new UserDto
+                {
+                    Id = entity.Author.Id,
+                    Email = entity.Author.Email,
+                    CreatedDate = entity.Author.CreatedDate,
+                    WrittenArticles = null
+                },
+                Tags = entity.ArticleTags.Select(a => a.Tag)
+                                        .Select(t => new TagDto
+                                        {
+                                            Id = t.Id,
+                                            Alias = t.Alias
+                                        }),
+                Categories = entity.ArticleCategories.Select(a => a.Category)
+                                        .Select(t => new CategoryDto
+                                        {
+                                            Id = t.Id,
+                                            Description = t.Description,
+                                            ParentId = t.ParentId,
+                                        }),
+                //Load comment later
+                Comments = new List<CommentDto>()
+            };
+            return result;
         }
     }
 }

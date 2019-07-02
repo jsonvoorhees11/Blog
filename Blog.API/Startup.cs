@@ -37,6 +37,7 @@ namespace SourceCodes
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IDataSeeding, DataSeedingFromJson>();
             services.AddScoped<IArticleService, ArticleService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddDefaultIdentity<User>().AddEntityFrameworkStores<BlogDbContext>().AddDefaultTokenProviders();
             services.AddEntityFrameworkSqlServer().AddDbContext<BlogDbContext>(
                 options => {
@@ -45,6 +46,9 @@ namespace SourceCodes
                 }
                 
             );
+            services.AddCors(c => {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -75,8 +79,8 @@ namespace SourceCodes
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
+            app.UseCors(options => options.AllowAnyOrigin());
+            //app.UseHttpsRedirection();
 
             app.UseAuthentication();
 
