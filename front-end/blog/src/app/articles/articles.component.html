@@ -14,7 +14,7 @@
       <div>
         <br>
         <div class="post-tags">
-            <a href="/tags#grab" *ngFor="let tag of item.tags" class="label tags-label">{{tag.alias}}</a>
+            <a routerLink="/articles/tag/{{tag.id}}" *ngFor="let tag of item.tags" class="label tags-label">{{tag.alias}}</a>
         </div>
       </div>
     </article>

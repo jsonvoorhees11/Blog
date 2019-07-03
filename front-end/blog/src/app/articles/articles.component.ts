@@ -11,16 +11,23 @@ import { ActivatedRoute } from '@angular/router';
 export class ArticlesComponent implements OnInit {
   articleList: Article[]=[];
   categoryId: string='';
+  tagId: string = '';
   constructor(private route: ActivatedRoute,private articleService: ArticleService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.categoryId = params['categoryId'];
-      if(!this.categoryId){
+      this.tagId = params['tagId'];
+      if(!this.categoryId && !this.tagId){
         this.getArticles();
       }
       else{
-        this.getArticlesByCategory(this.categoryId);
+        if(this.categoryId){
+          this.getArticlesByCategory(this.categoryId);
+        }
+        if(this.tagId){
+          this.getArticlesByTag(this.tagId);
+        }
       }});
   }
 
@@ -31,6 +38,11 @@ export class ArticlesComponent implements OnInit {
 
   getArticlesByCategory(categoryId:string): void{
     this.articleService.getArticlesByCategory(categoryId)
+      .subscribe(articles => this.articleList = articles);
+  }
+
+  getArticlesByTag(tagId: string) : void {
+    this.articleService.getArticlesByTag(tagId)
       .subscribe(articles => this.articleList = articles);
   }
 }

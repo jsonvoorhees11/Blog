@@ -25,4 +25,9 @@ export class ArticleService {
     return this.httpClient
             .get<Article>(environment.apiUrl + `articles/slug/${slug}`);
   }
+
+  public getArticlesByTag(tagAlias: string) : Observable<Article[]>{
+    return this.httpClient
+            .get<Article[]>(environment.apiUrl+`articles/tag/${tagAlias}`);
+  }
 }
