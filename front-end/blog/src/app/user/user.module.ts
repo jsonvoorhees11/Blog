@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { UserRoutingModule } from './user-routing.module';
 import { ArticlesComponent } from './articles/articles.component';
-import { HeaderComponent } from '../shared/components/header/header.component';
+import { HeaderComponent } from './header/header.component';
 import { ArticleDetailComponent } from './article-detail/article-detail.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';

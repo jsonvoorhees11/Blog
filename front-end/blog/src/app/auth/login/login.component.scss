@@ -1,0 +1,22 @@
+.login-page{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 900px;
+
+}
+
+.login-box {
+  border-radius: 2px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 50px;
+  flex:3;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+};
+
+.login-title {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}

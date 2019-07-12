@@ -15,7 +15,8 @@ const routes: Routes = [
           { path: 'articles/category/:categoryId', component: ArticlesComponent },
           { path: 'articles/tag/:tagId', component: ArticlesComponent },
           { path: 'articles', component: ArticlesComponent },
-          { path: 'article/:slug', component: ArticleDetailComponent }
+          { path: 'article/:slug', component: ArticleDetailComponent },
+          { path: '', redirectTo:'/articles', pathMatch:'full'}
         ]
       }
     ]
